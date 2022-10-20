@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<context:annotation-config />
+	<aop:aspectj-autoproxy/>
+	<context:component-scan base-package="kr.co.animal"/>
+	<mvc:annotation-driven/>
+
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+	
+	<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"  value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+		<property name="order" value="0"/> 
+	</bean>
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles-definitions.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+		<property name="order" value="1"/>
+	</bean>
+	
+	<!-- Datasource 설정 및 MyBatis 설정 : Datasource 설정은 MyBatis만을 위해 사용하는 것이 아니기 때문에 따로 설정한다.-->
+	<!-- Datasource : JNDI -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/myora"/>
+	</bean>
+	
+	<bean id="factorybean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:kr/co/animal/config/config.xml"/>
+		<property name="mapperLocations" value="classpath*:kr/co/animal/mapper/*.xml"/>
+	</bean>
+	
+	<!-- 내가 사용하려는 OpenSession, selectOne, selectList, insert, delete 같은 객체를 사용하기 위해 factoryBean을 ref로 생성자에 주입한다. -->
+	<!-- Autowired로 사용함 -->
+	<bean id="ss" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="factorybean"/>
+	</bean>
+	
+	<!-- 트랜젝션 처리를 위한 설정 -->
+	<!-- 스프링에서 트랜젝션 처리란? 스프링 AOP의 주요 사용처 중 하나가 트랜젝션이다. 즉, AOP의 관점으로 이해하면 좋을 것이다. -->
+	<!-- DataSource에만 관여하며, 마이바티스 같은 프로그램에는 관여하지 않는다. -->
+	<bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 이렇게 설정하면, 트랜젝션을 AOP적으로 설정할 수 있다. -->
+	<tx:annotation-driven transaction-manager="tm"/>
+	
+	<!-- 
+       fileupload CommonsMultipartResolver 추가해야 한다.
+       common-fileupload.jar
+   -->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+	
+	<!-- websocket handler
+   <bean id="mysockethandler2" class="kr.co.animal.socket.MySocketHandler2"/>
+   
+   <websocket:handlers>
+      <websocket:mapping handler="mySocketHandler2" path="/websocket/echo"/>
+      <websocket:handshake-interceptors>
+         <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+      </websocket:handshake-interceptors>
+   </websocket:handlers>-->
+
+   <!-- 이메일 인증 -->
+	<context:property-placeholder location="classpath:kr/co/animal/properties/email.properties"/>
+   
+   	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="${email.account}"/>
+		<property name="password" value="${email.password}"/>
+		
+		<!-- 보안연결 SSL -->
+		<property name="javaMailProperties">
+			<props >
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<!-- gmail 보안문제 업데이트로 인해 SSLSocketFactory 추가를 통해 SMTP사용 가능 -->
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtps.checkserveridentity">true</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.trust">*</prop><!-- smtp.gmail.com -->
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

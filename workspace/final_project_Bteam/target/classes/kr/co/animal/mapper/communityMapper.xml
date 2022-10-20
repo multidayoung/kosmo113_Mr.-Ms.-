@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="community">
+
+	<!-- Android recom friend -->
+	<select id="androidRecomFriend" resultType="anrm" parameterType="String">
+	<![CDATA[
+	select rec.member_id,rec.animal_img1,mem.member_name,mem.member_img from member mem,(select animal_img1,member_id from (
+          select rownum a_num,a.animal_num,a.animal_img1,a.animal_name,a.member_id from (
+              select animal_num, animal_name, animal_img1, member_id from animal 
+                where member_id in(
+                select member_id from member where member_addr = (
+                select member_addr from member
+                where member_id=#{member_id}) 
+                and member_id not in (select friends_userid from friends where friends_status='승인' and friends_friendid=#{member_id}
+            union
+            select friends_friendid from friends where friends_status='승인' and friends_userid=#{member_id}
+            union
+            select member_id from animal where member_id=#{member_id}))
+                and cate_species= (select cate_species from animal where member_id=#{member_id})
+                order by dbms_random.value
+          ) a
+      ) where a_num <= 8) rec where mem.member_id = rec.member_id
+      ]]>
+     </select>
+
+	<!-- 목록 -->
+	<select id="totalCount" resultType="int">
+		select count(*) from animal
+	</select>
+	
+	<!-- 목록 - 개 -->
+	<select id="totalCount_dog" resultType="int">
+		select count(*) from animal where cate_species='개'
+	</select>
+	
+	<!-- 목록 - 고양이 -->
+	<select id="totalCount_cat" resultType="int">
+		select count(*) from animal where cate_species='고양이'
+	</select>
+	
+	<!-- 커뮤니티 리스트 -->
+	<select id="list" resultType="avo" parameterType="avo">
+		select * from (
+    		select rownum a_num, a.* from (
+        		select * from animal where member_id not in #{member_id} order by animal_num asc
+    		) a
+		) where a_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 커뮤니티 리스트 - 개 -->
+	<select id="list_dog" resultType="avo" parameterType="avo">
+		select * from (
+    		select rownum a_num, a.* from (
+        		select * from animal where member_id not in #{member_id} and cate_species='개' order by animal_num asc
+    		) a
+		) where a_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 커뮤니티 리스트 - 고양이 -->
+	<select id="list_cat" resultType="avo" parameterType="avo">
+		select * from (
+    		select rownum a_num, a.* from (
+        		select * from animal where member_id not in #{member_id} and cate_species='고양이'  order by animal_num asc
+    		) a
+		) where a_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 상세 -->
+	<select id="detail" resultType="avo" parameterType="int" >
+		select * from animal where animal_num = #{animal_num}
+	</select>
+	
+	<!-- 친구인지 확인 -->
+	<select id="checkfriends" resultType="int"  parameterType="fvo">
+		select count(*) from friends where friends_status='승인' and ((friends_userid=#{friends_userid} and friends_friendid=#{friends_friendid})
+    	or (friends_userid=#{friends_friendid} and friends_friendid=#{friends_userid}))
+	</select>
+	
+	<!-- 친구추가 -->
+	<insert id="addfriends" parameterType="fvo">
+		insert into friends values(#{friends_userid},#{friends_status},#{friends_friendid})
+	</insert>
+	
+	<!-- 친구상태확인 -->
+	<select id="statfriends" resultType="int" parameterType="fvo" >
+		select count(*) from friends where friends_userid=#{friends_userid} and friends_friendid=#{friends_friendid}
+	</select>
+	
+	<!-- 추천 친구 -->
+	<select id="recommend" resultType="avo" parameterType="String" >
+		<![CDATA[
+		select animal_num,animal_img1,animal_name,member_id from (
+    		select rownum a_num,a.animal_num,a.animal_img1,a.animal_name,a.member_id from (
+        		select animal_num, animal_name, animal_img1, member_id from animal 
+                where member_id in(
+                select member_id from member where member_addr = (
+                select member_addr from member
+                where member_id=#{member_id}) 
+                and member_id not in (select friends_userid from friends where friends_status='승인' and friends_friendid=#{member_id}
+				union
+				select friends_friendid from friends where friends_status='승인' and friends_userid=#{member_id}
+				union
+				select member_id from animal where member_id=#{member_id}))
+                and cate_species= (select cate_species from animal where member_id=#{member_id})
+                order by dbms_random.value
+    		) a
+		) where a_num <= 8
+		]]>
+	</select>
+	
+	<!-- 메시지 보내기 -->
+	<insert id="addmessage" parameterType="msvo">
+		insert into message values(message_seq.nextVal,#{message_sendid},#{message_content},#{message_receiveid},default,sysdate)
+	</insert>
+	
+	<!-- 메시지 카운트 -->
+	<select id="messageCount" resultType="int" parameterType="String" >
+		select count(*) from message where message_receiveid=#{member_id} and message_readchk=0
+	</select>
+	
+	
+
+</mapper> 

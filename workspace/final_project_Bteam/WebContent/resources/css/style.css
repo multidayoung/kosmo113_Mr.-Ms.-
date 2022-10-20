@@ -1,0 +1,305 @@
+@charset "EUC-KR";
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* 초기화 */
+* {padding:0; margin:0;}
+a {color:#282828; text-decoration:none; outline:none;}
+a:hover, a:active {text-decoration:none; color:#282828;}
+ul, li {padding:0; margin:0; list-style:none;}
+
+/* 폰트 지정 */
+* {font-family:'Jua', sans-serif;}
+
+/* 헤더 */
+header .banner {background:#282828; height:50px; line-height:50px; text-align:center; color:#fff; font-size:18px;}
+header h1 {text-align:center; margin:50px 0;}
+header h1 a {color:#282828; font-size:70px;}
+header nav {background:#f7f7f7;}
+header nav .container {position:relative;}
+
+header nav .search {position:absolute; left:0; top:0;}
+header nav .search input {border:0; height:30px; text-indent:10px;}
+header nav .search input[type=submit] {background:url(/final_project_Bteam/resources/image/search_icon.png)no-repeat; font-size:0; width:17px;}
+
+header nav .container > ul > li {display:inline-block;}
+
+header nav ul.navi {text-align:center;}
+header nav ul.navi > li {position:relative; display:inline-block;}
+header nav ul.navi > li > a {display:block; font-size:24px; padding:16px 40px 12px;}
+
+header nav ul.submenu {position:absolute; top:61px; left:0; width:100%; z-index:9999; border-top:2px solid #7ecae0; border-left:1px solid #ddd; border-bottom:1px solid #ddd; border-right:1px solid #ddd; padding:10px 0; background:#fff; display:none;}
+header nav ul.submenu li a {font-size:20px; display:block; padding:10px 0 8px;}
+
+header nav ul.member {position:absolute; right:0; top:21px;}
+header nav ul.member li {margin:0 10px;}
+header nav ul.member li a {font-size:18px;}
+
+.messagealam a {position:relative; display:block;}
+.messagealam p {position:absolute; top:-5px; right:-6px; border-radius:50%; background:red; color:#fff; width:20px; height:20px; line-height:20px; font-size:12px; text-align:center;}
+
+/* 공통으로 사용될 content */
+.content {min-height:600px; padding:50px 0;}
+
+/* 푸터 */
+footer {background:#f7f7f7; text-align:center; padding:20px 0;}
+footer p {margin:0;}
+
+/* 페이징 */
+.paging {list-style:none; text-align:center; padding:0; margin:10px 0;}
+.paging li {display:inline-block;}
+.paging li.disable {padding:3px 10px; border:1px solid silver; color:silver;}
+.paging li.now {padding:3px 10px; border:1px solid #000; background:#000; color:white; font-weight:bold;}
+.paging li a {display:block; padding:3px 10px; border:1px solid #000; color:#000; font-weight:bold;}
+.paging li a:hover {background:#000; color:#fff; font-weight:bold;}
+
+/* 해당 페이지 경로 보여주는 path */
+.path {background:#ccc; color:#fff; text-align:right; padding:5px 0;}
+.path div {font-family:'Noto Sans KR', sans-serif;}
+.path div span {color:#eee;}
+.path div b {font-weight:400;}
+
+
+
+/****************** 메인  ******************/
+.introduction {text-align:center;}
+.introduction h2 {font-size:45px; font-weight:bold; margin:0 0 60px 0;}
+.introduction ul li {display:inline-block; width:33%; padding:0 40px; vertical-align:top;}
+.introduction .imgbox img {width:120px;}
+.introduction .txtbox {margin:20px 0 0;}
+.introduction .txtbox p:nth-child(1) {margin:0;}
+.introduction .txtbox p:nth-child(2) {font-size:30px; border-bottom:3px solid #7ecae0; padding:0 0 10px;}
+.introduction .txtbox p:nth-child(3) {font-family:'Noto Sans KR', sans-serif;}
+.introduction .txtbox p:nth-child(4) {margin:0; font-size:30px; color:#ddd;} 
+.introduction ul li a:hover .txtbox p:nth-child(4) {color:#7ecae0;}
+
+.imglist ul:after {display:block; content:''; clear:both;}
+.imglist ul li {float:left; width:25%;}
+.imglist ul li img{width:100%;}
+
+
+
+/****************** 앱 소개  ******************/
+.bg {background:#e9fbff;}
+.trailslist {padding:80px 0;}
+.trailslist .textBox {display:inline-block; vertical-align:middle; width:39%; padding:0 0 0 50px;}
+.trailslist .textBox .title {font-size:40px; line-height:1.2;}
+.trailslist .textBox .desc {font-family:'Noto Sans KR', sans-serif;}
+.trailslist .imgBox {display:inline-block; vertical-align:middle; width:60%; text-align:center;}
+.trailslist .imgBox img {height:450px;}
+
+
+
+/****************** 친구찾기  ******************/
+/***** 리스트 - 추천친구 *****/
+.recommend {background:#7ecae0; padding:50px 0;}
+.recommend h2 {color:#fff;}
+.recommendlist {padding:0 4%;}
+.recommendlist a .imgbox {height:190px; overflow:hidden;}
+.recommendlist a .imgbox img {width:100%; transition:all 0.2s linear;}
+.recommendlist a h3 {font-size:23px; text-align:center; color:#fff; padding:10px 0 5px;}
+.recommendlist a:hover .imgbox img {transform:scale(1.2);}
+
+/***** 리스트 - 친구목록 *****/
+.animallist:after {display:block; content:""; clear:both;}
+.animallist li {float:left; width:20%; padding:0 1%; margin:0 0 20px 0;}
+.animallist li a .imgbox {height:150px; overflow:hidden;}
+.animallist li a .imgbox img {width:100%; transition:all 0.2s linear;}
+.animallist li a .txtbox h3 {font-size:23px; text-align:center; background:#f7f7f7; padding:10px 0 5px;}
+.animallist li a .txtbox p {font-size:18px;}
+.animallist li a:hover .imgbox img {transform:scale(1.2);}
+
+/***** 상세 *****/
+.animaldetail_img {display:inline-block; vertical-align:top; width:45%;}
+.animaldetail_img .carousel-item {height:480px; overflow:hidden;}
+.animaldetail_img .carousel-item img {width:100%; height:100%; object-fit:cover;}
+
+.animaldetail_txt {display:inline-block; vertical-align:top; width:54%; padding:0 0 0 50px;}
+.animaldetail_txt h1 {margin:0 0 20px;}
+.animaldetail_txt table {margin:0 0 20px;}
+.animaldetail_txt table tr th {font-size:22px; width:60px; vertical-align:top;}
+.animaldetail_txt table tr td {font-size:22px;}
+
+
+
+/****************** 커뮤니티  ******************/
+/***** 리스트 *****/
+.searchForm {margin:0 0 20px; text-align:end;}
+.searchForm select {font-family:'Noto Sans KR', sans-serif; height:38px;}
+.searchForm select option {font-family:'Noto Sans KR', sans-serif;}
+.searchForm input[type='text']{font-family:'Noto Sans KR', sans-serif; width:300px; height:38px;}
+.searchForm input[type='submit']{vertical-align:bottom;}
+
+.boardlist:after {display:block; content:''; clear:both;}
+.boardlist li {float:left; width:32.6%; border:1px solid #ddd; margin:0 1% 1% 0;}
+.boardlist li:nth-child(3n) {margin:0 0 1% 0;}
+.boardlist li a .writerinfo {background:#7ecae0; padding:10px;}
+.boardlist li a .writerinfo > div {display:inline-block; vertical-align:middle; margin:0 10px 0 0; color:#fff;}
+.boardlist li a .writerinfo > div:nth-child(1) {border-radius:50%; width:50px; height:50px; background:#fff; overflow:hidden;}
+.boardlist li a .writerinfo > div:nth-child(1) img {width:100%; height:100%; object-fit:cover;}
+.boardlist li a .writerinfo > div:nth-child(2) {font-size:18px;}
+
+.boardlist li a .imgbox {height:300px; background:#ddd;}
+.boardlist li a .imgbox img {width:100%; height:100%; object-fit:cover;}
+.boardlist li a .btnbox {padding:10px 10px 0; border-top:1px solid #ddd;}
+.boardlist li a .btnbox img {width:18px; vertical-align:text-bottom;}
+.boardlist li a .txtbox {padding:5px 10px 10px; height:61px;}
+.boardlist li a .txtbox p {font-family:'Noto Sans KR', sans-serif; font-size:14px; overflow: hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; word-wrap:break-word;}
+
+.writeBtn {text-align:right;}
+.writeBtn input {border:1px solid #7ecae0; background:#7ecae0; color:#fff; padding:5px 20px;}
+
+/***** 상세 *****/
+.boarddetail {text-align:center;}
+.boarddetail h2 {font-size:40px;}
+.boarddetail .wirte {color:#666; padding:5px 0 30px; border-bottom:1px solid #000;}
+.boarddetail .cont {border-bottom:1px solid #000; padding:20px 0 30px;}
+.boarddetail .cont img {width:auto; max-width:700px;}
+.boarddetail .cont p {margin:30px 0 0; font-size:16px; font-family:'Noto Sans KR', sans-serif;}
+.boarddetail .boarddetailbtn {text-align:right; margin:10px 0 0;}
+
+
+
+/****************** 쇼핑몰  ******************/
+/***** 리스트 *****/
+.category {text-align:center; margin:0 0 30px;}
+.category li {display:inline-block;}
+.category a {font-size:22px; display:block; width:100%; padding:15px 50px 10px; border:1px solid #ddd;}
+.category a.on {background:#7ecae0; color:#fff; border:1px solid #7ecae0;}
+
+.count {font-size:20px;}
+
+.itemlist:after {display:block; content:""; clear:both;}
+.itemlist li {display:inline-block; vertical-align:top; width:18.8%; margin:0 0.4% 20px; border:1px solid #ddd;}
+.itemlist li a .imgbox {overflow:hidden;}
+.itemlist li a .imgbox img {width:100%; transition:all 0.2s linear;}
+.itemlist li a .txtbox {padding:10px 12px;}
+.itemlist li a .txtbox p {margin:0;}
+.itemlist li a .txtbox p.name {font-size:16px; font-family:'Noto Sans KR', sans-serif; margin:0 0 10px; height:60px;}
+.itemlist li a .txtbox p.price {font-size:24px;}
+.itemlist li a:hover .imgbox img {transform:scale(1.2);}
+
+/***** 상세 *****/
+.itemdetail_img {display:inline-block; vertical-align:top; width:45%; height:420px; text-align:center;}
+.itemdetail_img img {width:100%; height:100%; max-width:fit-content;}
+
+.itemdetail_txt {display:inline-block; vertical-align:top; width:54%; padding:0 0 0 50px;}
+.itemdetail_txt h1 {font-size:35px; margin:0 0 35px;}
+.itemdetail_txt input {border:0;}
+.itemdetail_txt input[type="number"] {border:1px solid #ddd; width:60%;}
+.itemdetail_txt p {font-family:'Noto Sans KR', sans-serif; font-size:18px; margin:0 0 10px;}
+.itemdetail_txt p.total span {font-weight:bold; font-size:20px;}
+.itemdetail_txt p.total {padding:20px 0; margin:30px 0 0; text-align:right; border-top:2px solid #000;}
+.itemdetail_txt span {font-family:'Noto Sans KR', sans-serif; display:inline-block;}
+.itemdetail_txt span.txt {width:120px; font-weight:bold;}
+
+.itemdetail_txt:after {display:block; content:''; clear:both;}
+.itemdetail_txt .btns button {float:left; width:50%; font-size:20px; padding:15px 0; border:0;}
+.itemdetail_txt .btns button#buybtn {background:#282828; color:#fff;}
+
+.itemdetail_tab {margin:40px 0 0;}
+.itemdetail_tab .tab_btn li {display:inline-block; width:49.5%; text-align:center; color:#282828; padding:14px 20px 8px; cursor:pointer; font-size:22px; border-bottom:3px solid #ddd;}
+.itemdetail_tab .tab_btn li.on {color:#7ecae0; border-bottom:3px solid #7ecae0;}
+.itemdetail_tab .tab_con {display:none; margin:30px 0 0;}
+.itemdetail_tab .tab_con.on {display:inherit;}
+
+/***** 상세 - 후기 *****/
+.reviewlist li {margin:0 0 20px 0;}
+.reviewlist li .score span.star {color:red;}
+.reviewlist li p {margin:0;}
+.reviewlist li p.comm {font-family:'Noto Sans KR', sans-serif;}
+
+/***** 구매하기 *****/
+.orderprd {border-radius:20px; border:2px solid #282828; padding:40px 0; margin:0 0 30px; text-align:center;}
+.orderprd div {display:inline-block; vertical-align:middle;}
+.orderprd div:nth-child(1) {width:15%;}
+.orderprd div:nth-child(2) {width:50%; font-size:22px;}
+.orderprd div img {width:150px;}
+
+.orderform {margin:0 0 10px;}
+.orderform div {display:inline-block; vertical-align:top; width:94%;}
+.orderform div.tit {width:5%; font-size:20px;}
+.orderform select {width:100px;}
+.orderform textarea {width:100%; height:200px; font-family:'Noto Sans KR', sans-serif;}
+
+.orderform2 {display:inline-block; width:33%; margin:20px 0 10px;}
+.orderform2 .tit {font-size:18px;}
+
+
+
+/****************** 마이페이지 ******************/
+.mypage:after {display:block; content:''; clear:both;}
+
+/* left 메뉴 */
+.left_menu {width:200px; float:left;}
+.left_menu li a {font-size:22px; display:block; width:100%; padding:10px 10px 5px;}
+.left_menu li a:hover, .left_menu li a.on {background:#7ecae0; color:#fff;}
+
+/* tab 메뉴 */
+.right_cont {width:1050px; float:left; margin:0 0 0 70px;}
+
+.tab_btn li {display:inline-block;}
+.tab_btn li a {color:#282828; padding:14px 20px 8px; font-size:20px;}
+.tab_btn li a.on {color:#7ecae0; border-bottom:3px solid #7ecae0; font-size:22px;}
+.tab_content {margin:30px 0 0; max-height:700px; overflow:scroll;}
+.tab_content.on {display:inherit;}
+
+/***** 친구목록 / 요청한 목록 / 요청받은 목록 공통 *****/
+.friendslist {width:49.5%; padding:30px 0; display:inline-block; border-bottom:2px solid #ddd;}
+.friendslist .imgbox {display:inline-block; vertical-align:middle; width:130px; height:130px; border-radius:50%; overflow:hidden;}
+.friendslist .imgbox img {width:100%; height:100%; object-fit:cover;}
+.friendslist .txtbox {display:inline-block; vertical-align:middle; margin:0 0 0 20px; width:320px;}
+.friendslist .txtbox p {font-size:20px; margin-bottom:0;}
+.friendslist .txtbox p.name {font-size:24px;}
+.friendslist .txtbox button {margin:10px 0 0;}
+
+/***** 장바구니 - 목록 *****/
+.basketlist {border-radius:20px; border:1px solid #ddd; padding:20px 0; margin:0 0 10px;}
+.basketlist li {display:inline-block; vertical-align:middle; text-align:center;}
+.basketlist li:nth-child(1) {width:16%;}
+.basketlist li:nth-child(2) {width:35%; text-align:left;}
+.basketlist li:nth-child(3) {width:18%;}
+.basketlist li:nth-child(3) input {width:70px; display:inline-block; vertical-align:middle;}
+.basketlist li:nth-child(4) {width:15%;}
+.basketlist li:nth-child(5) {width:12%;}
+.basketlist li img {width:100px;}
+
+.totalprice {text-align:right; font-size:20px;}
+.totalprice span {font-size:26px;}
+
+.basketorderbtn {margin:0 auto; width:200px;}
+.basketorderbtn button {background:#7ecae0; color:#fff; width:100%; padding:14px 0 10px; font-size:18px;}
+.basketorderbtn button:hover {color:#fff;}
+
+/***** 장바구니 - 상세 *****/
+.basketimg {text-align:center; padding:100px 0;}
+
+.basketdetail {border-radius:20px; border:2px solid #282828; padding:20px 0; margin:0 0 10px;}
+.basketdetail li {display:inline-block; vertical-align:middle; text-align:center;}
+.basketdetail li:nth-child(1) {width:16%;}
+.basketdetail li:nth-child(2) {width:67%; text-align:left;}
+.basketdetail li:nth-child(3) {width:15%;}
+.basketdetail li img {width:100px;}
+
+.basketdetailform div {display:inline-block; vertical-align:top; width:90%; margin:0 0 10px;}
+.basketdetailform div.tit {width:9%; font-size:20px;}
+
+.basketdetailBtn {text-align:right;}
+.basketdetailBtn .btn {background:#7ecae0; color:#fff;}
+.basketdetailBtn .btn.cancle {background:#ddd;}
+
+
+
+/****************** 리뷰 ******************/
+.reviewprd {border-radius:20px; border:2px solid #282828; padding:40px 0; margin:0 0 10px; text-align:center;}
+.reviewprd div {display:inline-block; vertical-align:middle;}
+.reviewprd div:nth-child(1) {width:15%;}
+.reviewprd div:nth-child(2) {width:50%; font-size:22px;}
+.reviewprd div img {width:150px;}
+
+.reviewform div {display:inline-block; vertical-align:top; width:94%; margin:0 0 10px;}
+.reviewform div.tit {width:5%; font-size:20px;}
+.reviewform select {width:100px;}
+.reviewform textarea {width:100%; height:200px; font-family:'Noto Sans KR', sans-serif;}
+
+.reviewBtn {text-align:right;}
+.reviewBtn .btn {background:#7ecae0; color:#fff;}

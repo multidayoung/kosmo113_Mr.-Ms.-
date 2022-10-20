@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+{% for key, e in friend_dict.items %}
+    <tr>
+        <td>{{e.ANIMAL_NUM}}</td>
+        <td>{{e.ANIMAL_IMG1}}</td>
+        <td>{{e.ANIMAL_NAME}} </td>
+        <td>{{e.MEMBER_ID}}</td>
+        <td>{{e.ANIMAL_DETAIL}}</td>
+    </tr>
+{% endfor %}
+    </table>
+</body>
+</html>

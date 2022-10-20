@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.co.animal.dao.ShopDao">
+	<!--  카테1 -->
+	<select id="shoplist" resultType="svo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select shopping_mall_num,
+			   shopping_mall_name,
+			   shopping_mall_img,
+			   shopping_mall_url,
+			   shopping_mall_cate
+		from ( 
+			   select shopping_mall_num,
+			   		  shopping_mall_name,
+			   		  shopping_mall_img,
+			   		  shopping_mall_url,
+			   		  shopping_mall_cate,
+					  row_number() over(order by shopping_mall_num desc) as rNum 
+			   from shopping_mall 
+			   where shopping_mall_cate = '반려캐리어'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by shopping_mall_num desc
+	</select>
+	<select id="listCount" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(shopping_mall_num) 
+		from shopping_mall 
+		where shopping_mall_cate='반려캐리어'
+		<include refid="search"></include>
+		and shopping_mall_Num > 0
+	</select>
+	
+	<select id="shoplist2" resultType="svo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select shopping_mall_num,
+			   shopping_mall_name,
+			   shopping_mall_img,
+			   shopping_mall_url,
+			   shopping_mall_cate
+		from ( 
+			   select shopping_mall_num,
+			   		  shopping_mall_name,
+			   		  shopping_mall_img,
+			   		  shopping_mall_url,
+			   		  shopping_mall_cate,
+					  row_number() over(order by shopping_mall_num desc) as rNum 
+			   from shopping_mall 
+			   where shopping_mall_cate='매트'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by shopping_mall_num desc
+	</select>
+	<select id="listCount2" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(shopping_mall_num) 
+		from shopping_mall 
+		where shopping_mall_cate='매트'
+		<include refid="search"></include>
+		and shopping_mall_Num > 0
+	</select>
+	<!--  카테3 -->
+	<select id="shoplist3" resultType="svo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select shopping_mall_num,
+			   shopping_mall_name,
+			   shopping_mall_img,
+			   shopping_mall_url,
+			   shopping_mall_cate
+		from ( 
+			   select shopping_mall_num,
+			   		  shopping_mall_name,
+			   		  shopping_mall_img,
+			   		  shopping_mall_url,
+			   		  shopping_mall_cate,
+					  row_number() over(order by shopping_mall_num desc) as rNum 
+			   from shopping_mall 
+			   where shopping_mall_cate='안전문'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by shopping_mall_num desc
+	</select>
+	<select id="listCount3" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(shopping_mall_num) 
+		from shopping_mall 
+		where shopping_mall_cate='안전문'
+		<include refid="search"></include>
+		and shopping_mall_Num > 0
+	</select>
+	<!--  카테4 -->
+	<select id="shoplist4" resultType="svo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select shopping_mall_num,
+			   shopping_mall_name,
+			   shopping_mall_img,
+			   shopping_mall_url,
+			   shopping_mall_cate
+		from ( 
+			   select shopping_mall_num,
+			   		  shopping_mall_name,
+			   		  shopping_mall_img,
+			   		  shopping_mall_url,
+			   		  shopping_mall_cate,
+					  row_number() over(order by shopping_mall_num desc) as rNum 
+			   from shopping_mall 
+			   where shopping_mall_cate='계단'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by shopping_mall_num desc
+	</select>
+	<select id="listCount4" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(shopping_mall_num) 
+		from shopping_mall 
+		where shopping_mall_cate='계단'
+		<include refid="search"></include>
+		and shopping_mall_Num > 0
+	</select>
+	
+		<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND shopping_mall_name LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND shopping_mall_img LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND shopping_mall_cate LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (shopping_mall_name LIKE '%' || #{keyword} || '%') or (shopping_mall_cate LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	<!-- 수정  -->
+	<update id="updateShop" parameterType="svo">
+		update shopping_mall set shopping_mall_name=#{shopping_mall_name}, shopping_mall_img=#{shopping_mall_img}, shopping_mall_cate=#{shopping_mall_cate} 
+		where shopping_mall_num=#{shopping_mall_num}
+	</update>
+
+	<!-- 지우기 -->
+	<delete id="delShop" parameterType="int">
+		delete from shopping_mall where shopping_mall_num=#{shopping_mall_num}
+	</delete>
+	
+	<!-- 상세페이지 -->	
+	<select id="detail" parameterType="int" resultType="svo">
+		select * from
+		shopping_mall where shopping_mall_num=#{shopping_mall_num}
+	</select>
+</mapper>
+ 
+ 

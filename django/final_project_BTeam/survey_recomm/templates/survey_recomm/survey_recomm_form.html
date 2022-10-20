@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="content">
+
+<h2>성향 환경에 맞는 반려동물 추천 form 예제 </h2>
+
+<form method="post" name="form1" id="form1">
+<fieldset>
+<legend>성향 환경에 맞는 반려동물 추천 form 예제</legend>
+<p>
+<label for="in_outv">
+1. 한가로운 주말, 친구와의 약속이 갑자기 취소되었습니다. 당신의 반응은?
+</label><br>
+<select name="in_outv" id="in_outv">
+<option value="0">다른 친구에게 연락하여 약속을 잡아야지요!</option>
+<option value="1">오히려 좋습니다. 집에서 쉽니다.</option>
+</select>
+</p>
+<p>
+<label for="j_pv">
+2. 당신은 여행을 가게 되었습니다. 당신은 어떠한 유형에 가까운가요?
+</label><br>
+<select name="j_pv" id="j_pv">
+<option value="0">사람일 어떻게 될 지 모르는 법. 계획대로 되지 않아도 괜찮아요~ 다른 걸 하면 되죠.</option>
+<option value="1">8시 기상, 9시 식사, 11시 유명한곳 둘러보기! 등등 계획된 대로 진행되어야 직성이 풀립니다.</option>
+</select>
+</p>
+<p>
+<label for="f_tv">
+3. 소중한 사람이 고민이 있다며 당신을 찾아왔습니다. 당신은 어떠한 유형에 가까운가요?
+</label><br>
+<select name="f_tv" id="f_tv">
+<option value="0">친구의 고통을 해결하는 방법은 곧 문제 해결입니다. 해결책을 제시하는 편입니다.</option>
+<option value="1">"허얼ㅠㅠ" 친구의 고통이 곧 나의 고통! 공감과 위로를 건네는 편입니다.</option>
+</select>
+</p>
+<p>
+<label for="friendy_unfamv">
+4. 학교 혹은 직장에서 낯선 사람과 한 달 동안 함께 앉게 되었습니다. 당신은 어떠한 유형에 가까운가요?
+</label><br>
+<select name="friendy_unfamv" id="friendy_unfamv">
+<option value="0">새로운 사람들과 친해지는 거 너무 좋아요! 먼저 말을 겁니다.</option>
+<option value="1">말만 들어도 힘드네요... 필요한 말이 아니면 먼저 말을 걸지 않습니다.</option>
+</select>
+</p>
+<p>
+<label for="convent_openv">
+5. 당신과 다른 사상을 가진 사람을 볼 때에 당신은 아래 유형 중 어떤 유형에 가까운가요?
+</label><br>
+<select name="convent_openv" id="convent_openv">
+<option value="0">그럴 수도 있죠! 쿨하게 받아들입니다.</option>
+<option value="1">겉으로는 아무렇지 않은 척 해도 솔직히 받아들이기 어렵습니다...</option>
+</select>
+</p>
+<p>
+<label for="simple_artisticv">
+6. 일행과 함께 미술관에 가게 되었습니다. 당신은 어떠한 유형에 가까운가요?
+</label><br>
+<select name="simple_artisticv" id="simple_artisticv">
+<option value="0">대충 구경한 다음 나의 일행을 기다립니다.</option>
+<option value="1">한 작품 한 작품 자세하게 살펴봅니다.</option>
+</select>
+</p>
+<p>
+<label for="agev">
+나이 :
+</label>
+<input type="number" name="agev" id="agev" min="1" step="1" max="99">
+</p>
+
+<p><input type="button" id="wrtBtn" value="등록">
+<input type="button" value="목록" id="listBtn">
+</p>
+</fieldset>
+    <input type="hidden" id="json" name="json"/>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(function(){
+function objectifyForm(formArray) {
+    //serialize data function
+    var returnArray = {};
+    for (var i = 0; i < formArray.length-1; i++){
+        console.log(i+formArray[i]["name"]);
+        console.log(formArray[i]["value"]);
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
+    }
+    return returnArray;
+}
+
+$('#wrtBtn').click(function(){
+document.form1.action='dog_cat_result'
+//var ex1 = JSON.stringify($("#form1").serializeArray());
+ex1 = $("#form1").serializeArray();
+console.log(ex1);
+ex2 = objectifyForm(ex1);
+console.log(ex2);
+//document.form1.value = JSON.stringify(ex2);
+document.form1.action = "dog_cat_result";
+$('#json').val(ex2).appendTo('#form1');
+//$('#json').val(ex2);
+document.getElementById("json").value = JSON.stringify(ex2);
+console.log("json : "+document.getElementById("json").value)
+document.form1.submit();
+});
+});
+</script>
+
+</div>
+<div id="footer"></div>
+</body>
+</html>

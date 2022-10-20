@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="kr.co.animal.vo.MemberVO" alias="mvo"/> <!-- 회원 -->
+		<typeAlias type="kr.co.animal.vo.AnimalVO" alias="avo"/> <!-- 동물 -->
+		<typeAlias type="kr.co.animal.vo.CateVO" alias="cvo" /> <!-- 카테고리 -->
+		<typeAlias type="kr.co.animal.vo.FriendsVO" alias="fvo" /> <!-- 친구 -->
+		<typeAlias type="kr.co.animal.vo.IBoardDTO" alias="ibvo" />
+		<typeAlias type="kr.co.animal.vo.IBoardCommDTO" alias="bcvo" />
+		<typeAlias type="kr.co.animal.vo.MessageVO" alias="msvo" /> <!-- 쪽지 -->
+		
+		<typeAlias type="kr.co.animal.vo.BasketVO" alias="bvo"/>
+ 		<typeAlias type="kr.co.animal.vo.ItemVO" alias="ivo"/>
+ 		<typeAlias type="kr.co.animal.vo.OrdersVO" alias="ovo"/>
+ 		<typeAlias type="kr.co.animal.vo.ReviewsVO" alias="rvo"/>
+ 		<typeAlias type="kr.co.animal.vo.StockVO" alias="svo"/>
+ 		<typeAlias type="kr.co.animal.vo.SearchVO" alias="searchvo"/>
+ 		<typeAlias type="kr.co.animal.vo.MemberLogVO" alias="lvo"/> 		
+ 		<typeAlias type="kr.co.animal.vo.UserVO" alias="uvo"/> 	
+ 		<typeAlias type="kr.co.animal.vo.AndroidRecomMember" alias="anrm"/> 	
+ 		<typeAlias type="kr.co.animal.vo.PointVO" alias="pvo" /> <!-- 포인트 -->
+	</typeAliases>
+</configuration>

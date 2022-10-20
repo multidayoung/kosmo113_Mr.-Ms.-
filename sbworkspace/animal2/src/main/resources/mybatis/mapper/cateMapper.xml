@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.co.animal.dao.CateDao">
+	
+	<!-- 리스트 조회 -->
+	<select id="list3" resultType="cvo" parameterType="map">
+		select 
+		  cate_num,
+  		  cate_kind,
+   		  cate_img,
+   		  cate_detail
+		from cate 
+	</select>
+	
+	<select id="listPage" resultType="cvo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select cate_num,
+			   cate_species,
+			   cate_kind,
+			   cate_img,
+			   cate_detail
+		from ( 
+			   select cate_num,
+			   		  cate_species,
+			   		  cate_kind,
+			   		  cate_img,
+			   		  cate_detail,
+					  row_number() over(order by cate_num desc) as rNum 
+			   from cate 
+			   where cate_species='개'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by cate_num desc
+	</select>
+	<select id="listCount" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(cate_num) 
+		from cate 
+		where cate_species='개' 
+		<include refid="search"></include>
+		and cate_num > 0
+	</select>
+	
+	<select id="listPage2" resultType="cvo" parameterType="kr.co.animal.vo.SearchCriteria">
+		select cate_num,
+			   cate_species,
+			   cate_kind,
+			   cate_img,
+			   cate_detail
+		from ( 
+			   select cate_num,
+			   		  cate_species,
+			   		  cate_kind,
+			   		  cate_img,
+			   		  cate_detail,
+					  row_number() over(order by cate_num desc) as rNum 
+			   from cate 
+			   where cate_species='고양이'
+			   <include refid="search"></include>
+			   	   				) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by cate_num desc
+	</select>
+	<select id="listCount2" resultType="int" parameterType="kr.co.animal.vo.SearchCriteria">
+		select count(cate_num) 
+		from cate 
+		where cate_species='고양이'
+		<include refid="search"></include>
+		and cate_num > 0
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND cate_kind LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+	<!-- 개 리스트 조회 -->
+	<select id="doglist" resultType="cvo" parameterType="map">
+		select * from cate where cate_species = '개' order by cate_num
+	</select>
+	
+	<!-- 고양이 리스트 조회 -->
+	<select id="catlist" resultType="cvo" parameterType="map">
+		select * from cate where cate_species = '고양이' order by cate_num
+	</select>
+	
+	<!-- 수정  -->
+	<update id="updateCate" parameterType="cvo">
+		update cate set cate_kind=#{cate_kind}, cate_detail=#{cate_detail} where cate_num=#{cate_num}
+	</update>
+
+	<!-- 지우기 -->
+	<delete id="delCate" parameterType="int">
+		delete from cate where cate_num=#{cate_num}
+	</delete>
+	
+	<!-- 상세페이지 -->	
+	<select id="detail" parameterType="int" resultType="cvo">
+		select * from
+		cate where cate_num=#{cate_num}
+	</select>
+</mapper>
+ 
+ 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.animal.dao.AdminMemberDao">
+
+	<!-- member list mapper Query -->
+	<select id="listpage2" resultType="mvo"
+		parameterType="kr.co.animal.vo.SearchCriteria">
+		select *
+		from (
+		select member_id,
+		member_name,
+		member_pwd,
+		member_img,
+		member_gender,
+		member_age,
+		member_email,
+		member_phone,
+		member_addr,
+		member_date,
+		row_number() over(order by member_id desc) as
+		rNum
+		from member
+		where 1=1
+		<include refid="search"></include>
+		) mp
+		where rNum between #{rowStart} and #{rowEnd}
+		order by member_id
+		desc
+	</select>
+	<select id="alistCount" resultType="int"
+		parameterType="kr.co.animal.vo.SearchCriteria">
+		SELECT COUNT(member_id)
+		FROM member
+		WHERE 1=1
+		<include refid="search"></include>
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND member_id LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND member_name LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND member_gender LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (member_id LIKE '%' || #{keyword} || '%') or
+				(member_name LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	<!-- member Detail Query -->
+	<select id="detail"  resultType="mvo">
+		select * from
+		member where member_id=#{num}
+	</select>
+
+	<!-- delete Query -->
+	<delete id="del" >
+		delete from member where
+		member_id=#{member_id}
+	</delete>
+
+	<!-- update Query -->
+	<update id="mupdate" parameterType="mvo">
+		update member set member_id
+		=#{member_id},
+		member_name=#{member_name},member_email=#{member_email},
+		member_phone=#{member_phone},member_addr=#{member_addr} where member_id = #{member_id}
+	</update>
+
+	<select id="totalUsers" parameterType="mvo" resultType="int">
+		select count(*) from member
+	</select>
+	<select id="totalReviews" parameterType="rvo" resultType="int">
+		select count(*) from reviews
+	</select>
+	<select id="totalProduct" parameterType="ivo" resultType="int">
+		select count(*) from item
+	</select>
+	<select id="totalCatelist" parameterType="cvo" resultType="int">
+		select count(*) from cate
+	</select>
+	<select id="totalPost" resultType="int">
+		select count(*) from board
+	</select>
+	<select id="totalOrder" resultType="int">
+		select count(*) from orders
+	</select>
+</mapper>
+
+

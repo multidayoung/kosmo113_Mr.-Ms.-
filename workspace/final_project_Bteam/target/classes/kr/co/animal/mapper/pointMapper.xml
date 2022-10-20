@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="point">
+
+	<!-- 회원가입 -->
+	<insert id="add" parameterType="pvo">
+		Insert into point values(point_seq.nextVal, #{member_id}, #{point_cate}, #{point}, #{point_cont}, sysdate)
+	</insert>
+	
+	<!-- 포인트가 적립될 때 멤버테이블에 포인트가 변경 -->
+	<update id="updatePoint" parameterType="map">
+		update member set member_point=#{member_point} where member_id=#{member_id}
+	</update>
+	
+	<!-- 회원탈퇴시 포인트 삭제 -->
+	<delete id="deletePoint" parameterType="String">
+		delete from point where member_id=#{member_id}
+	</delete>
+	
+	<!-- totalCount -->
+	<select id="totalCount" parameterType="pvo" resultType="int">
+		select count(*) from point where member_id = #{member_id}
+	</select>
+	
+	<!-- 포인트 전체 기록 -->
+	<select id="listPoint" parameterType="String" resultType="pvo" >
+		select rownum r_num, p.* from 
+		(select * from point where member_id=#{member_id} order by point_date desc) p order by r_num
+	</select>
+	
+	<!-- 회원의 총 포인트 -->
+	<select id="allPoint" parameterType="String" resultType="int" >
+		select member_point from member where member_id=#{member_id}
+	</select>
+	
+	<!-- member_no를 가지고 member_id 구하기 -->
+	<select id="memberId" parameterType="int" resultType="String">
+		select member_id from member where member_no = #{member_no}
+	</select>
+
+</mapper>

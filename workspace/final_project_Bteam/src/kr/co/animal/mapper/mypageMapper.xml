@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mypage">
+
+	<!-- 안드로이드 절대지켜!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+	<!-- 안드로이드 로그인 -->
+   <select id="androidlogin" parameterType="mvo" resultType="mvo">
+        select member_id, member_name, member_img from member where member_id=#{member_id} and member_pwd=#{member_pwd}
+   </select>
+   
+   <!-- 안드로이드 친구목록 -->
+   <select id="Androidfriendslist" parameterType="String" resultType="mvo">
+   	   SELECT
+    CASE
+    WHEN a.friends_friendid <![CDATA[<>]]> #{MEMBER_ID} THEN
+    (
+        SELECT
+            b.member_id
+        FROM
+            member b
+        WHERE
+            b.member_id = a.friends_friendid
+    )
+    ELSE
+    a.member_id
+    END AS member_id,
+    CASE
+    WHEN a.friends_friendid <![CDATA[<>]]> #{MEMBER_ID} THEN
+    (
+        SELECT
+            b.member_name
+        FROM
+            member b
+        WHERE
+            b.member_id = a.friends_friendid
+    )
+    ELSE
+    a.member_name
+    END AS member_name,
+    CASE
+    WHEN a.friends_friendid <![CDATA[<>]]> #{MEMBER_ID} THEN
+    (
+        SELECT
+            b.member_img
+        FROM
+            member b
+        WHERE
+            b.member_id = a.friends_friendid
+    )
+    ELSE
+    a.member_img
+    END AS member_img,
+    friends_status,
+    friends_friendid
+FROM
+    (
+        SELECT
+            a.member_id,
+            a.member_name,
+            a.member_img,
+            b.friends_status,
+            b.friends_friendid
+        FROM
+            member a
+            INNER JOIN friends b ON a.member_id = b.friends_userid
+        WHERE
+            b.friends_status = '승인'
+            AND (b.friends_userid = #{MEMBER_ID} or b.friends_friendid =#{MEMBER_ID})
+        UNION ALL
+        SELECT
+            a.member_id,
+            a.member_name,
+            a.member_img,
+            b.friends_status,
+            b.friends_friendid
+        FROM
+            member  a
+            LEFT OUTER JOIN friends b ON a.member_id = b.friends_userid
+        WHERE
+            b.friends_status = '대기'
+            AND b.friends_friendid = #{MEMBER_ID}
+    ) a
+ORDER BY
+    friends_status
+   </select>
+   
+   <!-- 안드로이드 친구 디테일 -->
+   <select id="androidFriendDetail" parameterType="String" resultType="String">
+   	   select animal_img1 from animal where member_id=#{member_id}
+   </select> 
+	<!-- 안드로이드 절대지켜!!!!!!!!!!!!!!!!!!!!!!!!!!!! 끝-->
+
+
+	<!-- 친구목록 -->
+	<select id="friendslist" resultType="avo" parameterType="String" >
+		select animal_num,animal_name,animal_img1,animal_gender,cate_kind,member_id,animal_age from animal
+		where member_id in(select friends_userid from friends where friends_status='승인' and friends_friendid=#{member_id}
+		union
+		select friends_friendid from friends where friends_status='승인' and friends_userid=#{member_id})
+	</select>
+	
+	<!-- 친구삭제 -->
+	<delete id="friendsdel" parameterType="fvo">
+		delete from friends where (friends_userid=#{friends_userid} and friends_friendid=#{friends_friendid})
+		or (friends_userid=#{friends_friendid} and friends_friendid=#{friends_userid})
+	</delete>
+	
+	<!-- 요청 한 목록 -->
+	<select id="requestlist" resultType="avo" parameterType="String" >
+		select animal_num,animal_name,animal_age,animal_gender,animal_img1,cate_kind,member_id from animal
+		where member_id in(select friends_friendid from friends where friends_userid=#{member_id} and friends_status='대기')
+	</select>
+	
+	<!-- 요청 한 목록 거절  -->
+	<delete id="requestNo" parameterType="fvo">
+		delete from friends where friends_userid=#{friends_userid} and friends_friendid=#{friends_friendid}
+	</delete>
+	
+	<!-- 요청 받은 목록 -->
+	<select id="responselist" resultType="avo" parameterType="String" >
+		select animal_num,animal_name,animal_age,animal_gender,animal_img1,cate_kind,member_id from animal
+		where member_id in(select friends_userid from friends where friends_friendid=#{member_id} and friends_status='대기')
+	</select>
+	
+	<!-- 요청 받은 목록 승인  -->
+	<update id="responseOk" parameterType="fvo">
+		update friends set friends_status='승인' where friends_friendid=#{friends_friendid} and friends_userid=#{friends_userid}
+	</update>
+	
+	<!-- 요청 받은 목록 거절  -->
+	<delete id="responseNo" parameterType="fvo">
+		delete from friends where friends_userid=#{friends_userid} and friends_friendid=#{friends_friendid}
+	</delete>
+	
+	<!-- 받은 쪽지목록 -->
+	<resultMap id="messageResult" type="mvo">
+			<result property="rownum" column="rownum" />
+			<result property="member_id" column="member_id" />
+		<association property="animal" javaType="avo">
+			<result property="animal_img1" column="animal_img1" />
+			<result property="animal_name" column="animal_name" />		
+		</association>
+		<collection property="message" javaType="msvo">
+			<result property="message_num" column="message_num" />		
+			<result property="message_content" column="message_content" />
+			<result property="message_date" column="message_date" />
+			<result property="message_readchk" column="message_readchk" />			
+		</collection>
+	</resultMap>
+	<select id="messagelist" resultMap="messageResult" parameterType="String" >
+		select rownum,a.* from (select a.message_num,c.animal_name,a.message_content,c.animal_img1,a.message_date,a.message_readchk,b.member_id from message a join member b on a.message_sendid = b.member_id
+		join animal c on b.member_id = c.member_id where a.message_receiveid=#{member_id} order by a.message_date desc) a
+	</select>
+	
+	<!-- 보낸 쪽지목록 -->
+	<resultMap id="reqmessageResult" type="mvo">
+			<result property="rownum" column="rownum" />
+			<result property="member_id" column="member_id" />
+		<association property="animal" javaType="avo">
+			<result property="animal_img1" column="animal_img1" />
+			<result property="animal_name" column="animal_name" />		
+		</association>
+		<collection property="message" javaType="msvo">
+			<result property="message_num" column="message_num" />	
+			<result property="message_content" column="message_content" />
+			<result property="message_date" column="message_date" />
+			<result property="message_readchk" column="message_readchk" />			
+		</collection>
+	</resultMap>
+	<select id="reqmessagelist" resultMap="reqmessageResult" parameterType="String" >
+		select rownum, a.* from ( select a.message_num,c.animal_name,a.message_content,c.animal_img1,a.message_date,a.message_readchk,b.member_id from message a join member b on a.message_receiveid = b.member_id
+		join animal c on b.member_id = c.member_id where a.message_sendid=#{member_id} order by a.message_date desc) a
+	</select>
+	
+	<!-- 쪽지 상세 -->
+	<select id="messageDetail" resultType="msvo" parameterType="int" >
+		select message_sendid,message_content,message_date from message where message_num=#{message_num}
+	</select>
+	
+	<!-- 읽은 메시지 처리 -->
+	<update id="messageReadChk" parameterType="int">
+		update message set message_readchk=1 where message_num = #{message_num}
+	</update>
+	
+	
+</mapper>

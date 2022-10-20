@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+function readURL(input) {
+	if(input.files && input.files[0]) {
+		//자바스크립트 I/O
+		var reader = new FileReader();
+		//
+		reader.onload = function(e) { //읽어왔다면 이렇게 하거라 이거임.
+			//e.target.result
+			console.log("Path: "+e.target.result);
+			$('#imgx').attr('src',e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+$(function(){
+    $('#file1').change(function () {
+        //console.log($(this).val());
+        readURL(this);
+    });
+
+    $('#wrtBtn').click(function(){
+        //document.form1.action='res';
+        const imageInput = $("#file1")[0];
+        // 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+        console.log("imageInput: ", imageInput.files)
+
+        if(imageInput.files.length === 0){
+            alert("파일은 선택해주세요");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file1", imageInput.files[0]);
+        $.ajax({
+            url: "res",
+            type : "POST",
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType : "json",
+            success: function(data){
+                //console.log(data);
+                var result = JSON.parse(data).cnn_res;
+                console.log(JSON.parse(data).cnn_res);
+                //console.log(JSON.stringifydata["cnn_res"]);
+                $('#target').html(result);
+            }
+        });
+        //document.form1.submit();
+    });
+
+});
+</script>
+<body>
+<form method="post" id="form1" name="form1" enctype="multipart/form-data">
+             <fieldset style="width:400px;margin:auto;">
+                 <legend>파일 업로드 예</legend>
+                <p>
+                    <label for="file1">사진 이미지: </label>
+                    <input type="file" name="file1" id="file1">
+                    <img src="resources/image/noimage.png" id="imgx">
+                </p>
+                <p style="text-align:right">
+                    <input type="button" value="결과보기" id="wrtBtn">
+                </p>
+                 <div id="target"></div>
+            </fieldset>
+
+        </form>
+
+</body>
+</html>
